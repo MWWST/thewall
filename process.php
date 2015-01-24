@@ -14,11 +14,16 @@ require('new-connection.php');
 		login($_POST);
 	}
 
+	elseif (isset($_POST['msgpost']) && $_POST['msgpost'] == 'newpost'){
+
+		newpost($_POST);
+	}
+
 	else // malicious navigation to process.php OR someone is trying to log off!
 
 		session_destroy();
-		header('location: index.php');
-		die();
+		// header('location: index.php');
+		// die();
 
 
 	function register_user($post){
@@ -95,6 +100,23 @@ require('new-connection.php');
 		}
 
 	}
+
+	function newpost($post) {
+
+		$postquery = "INSERT INTO messages (users_id, message, created_at, updated_at)
+		VALUES ('{$_SESSION['user_id']}','{$post['message']}',NOW(),NOW())";
+		run_mysql_query($postquery);
+		displayposts();
+
+	}
+
+	function displayposts(){
+		$displayquery = "SELECT users.first_name, users.last_name, messages.message, messages.created_at
+		FROM users LEFT JOIN messages on users.id = messages.users_id;";
+		$messages = fetch_all($displayquery);
+		var_dump($messages);
+		}
+
 
 
 ?>

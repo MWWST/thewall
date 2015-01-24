@@ -1,6 +1,18 @@
 <?php
 session_start();
 require('new-connection.php');
+function displayposts(){
+		$displayquery = "SELECT users.first_name, users.last_name, messages.message, messages.created_at
+		FROM users LEFT JOIN messages on users.id = messages.users_id;";
+		$messages = fetch_all($displayquery);
+		foreach ($messages as $id =>$messageset) {
+			// foreach ($messageset as $message) {
+				echo $messageset['first_name']." ".$messageset['last_name']." ".$messageset['created_at']."<br>".$messageset['message']."<br>";
+			}
+		// var_dump($messages);
+		var_dump($messageset);
+		}
+	
 ?>
 
 <html>
@@ -30,13 +42,19 @@ require('new-connection.php');
 	</div>
 	<div id="messagescont" class="row">
 		<div id="messages" class="ten column">
-		Messages go here
+		<form action="process.php" method ="post">
+		<textarea name="message"></textarea>
 		</div>
 		<div class= "u-pull-right">
-		<form action="process.php" method ="post">
+		
 		<input type="submit" value="Add Post">
-		<input type ="hidden" name ="post" value="newpost">
+		<input type ="hidden" name ="msgpost" value="newpost">
 		</form>
+		</div>
+		<div id="returnmsg">
+			<?php 
+			displayposts();
+			?>
 		</div>
 	</div>
 </div>

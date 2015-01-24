@@ -2,16 +2,24 @@
 session_start();
 require('new-connection.php');
 function displayposts(){
-		$displayquery = "SELECT users.first_name, users.last_name, messages.message, messages.created_at
+		$displayquery = "SELECT messages.id,users.first_name, users.last_name, messages.message, messages.created_at
 		FROM users LEFT JOIN messages on users.id = messages.users_id;";
 		$messages = fetch_all($displayquery);
 		foreach ($messages as $id =>$messageset) {
 			// foreach ($messageset as $message) {
-				echo $messageset['first_name']." ".$messageset['last_name']." ".$messageset['created_at']."<br>".$messageset['message']."<br>";
+				$msgid = $messageset['id'];
+				echo $messageset['id'],$messageset['first_name']." ".$messageset['last_name']." ".$messageset['created_at']."<br>".$messageset['message']."<br>".
+				"<form action='process.php' method='post'>
+				<textarea name='comment'></textarea>
+				<input type='submit' value='Comment'>
+				<input type='hidden' name='comment' value ='$msgid'>
+				</form>";
+
 			}
 		// var_dump($messages);
 		var_dump($messageset);
 		}
+
 	
 ?>
 

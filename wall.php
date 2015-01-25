@@ -3,49 +3,88 @@
 		require('new-connection.php');
 			if (isset($_SESSION['first_name'])){
 				
-			function commentsdisplay($mid) {
-					$getcommentsquery= "SELECT users.first_name, users.last_name,messages.id as message_id,comments.id as comment_id,comments.messages_id as comment_message_id,comments.comment, comments.created_at
+			function commentsdisplay() {
+					$getcommentsquery= "SELECT messages.id as message_id,comments.id as comment_id,comments.messages_id as comment_message_id,comments.comment, comments.created_at
 					FROM comments 
-					LEFT JOIN users on comments.users_id = users.id
 					LEFT JOIN messages on comments.messages_id = messages.id";
 					$comments = fetch_all($getcommentsquery);
+					
+				// foreach ($comments as $comment) {
+				// 	// var_dump ($comment);
+				// 	if ($comment['message_id'] == $comment['comment_message_id']){
 					var_dump($comments);
-
-
+				// 	}
 				}
-
+			}
 
 			function displayposts(){
-					$displayquery = "SELECT comments.comment, comments.messages_id as comment_msg_id, messages.id as message_id,messages.users_id, users.first_name, users.last_name, messages.id, messages.message, 
+					$displayquery = "SELECT messages.id as message_id,messages.users_id, users.first_name, users.last_name, messages.id, messages.message, 
 					messages.created_at
 					FROM users 
-					LEFT JOIN messages on users.id = messages.users_id
-					LEFT JOIN comments on messages.id = comments.messages_id;";
+					LEFT JOIN messages on users.id = messages.users_id;";
 					$messages = fetch_all($displayquery);
+					var_dump($messages);
+					commentsdisplay();
+
+					// var_dump($messages);
 					// var_dump($messages);
 					// var_dump($messages); 
 
-					foreach ($messages as $id =>$messageset) {
-						if (!empty($messageset['message'])){
-							$msgid = $messageset['id'];
-							$_SESSION['msgid'] = $msgid;
-							echo "Message ID". " " . $messageset['id']." ".$messageset['first_name']."  ".$messageset['last_name'].
-							" ".$messageset['created_at']."<br><b>Post:  </b>".$messageset['message'];
-?>
-<?php  					 
+					// $getcommentsquery= "SELECT users.first_name, users.last_name,messages.id as message_id,comments.id as comment_id,comments.messages_id as comment_message_id,comments.comment, comments.created_at
+					// FROM comments 
+					// LEFT JOIN users on comments.users_id = users.id
+					// LEFT JOIN messages on comments.messages_id = messages.id";
+					// $comments = fetch_all($getcommentsquery);
+
+
+					// var_dump($messages);
+					
+
+					// foreach ($messages as $key => $value) {
+					// 	var_dump($value);
+					// 	var_dump($value['comment']);
+						// var_dump($value['message']);
+						// var_dump($value['message_id']);
+
+						// foreach ($value as $message) {
+						// 	var_dump($message);
+						// }
 						
-}?> 
-							<form action='process.php' method='post'>
+						// foreach ($comments as $comment) {
+						// 	var_dump($comment['comment']);
+						// }
+						// var_dump($comments);
+					// }
+					
+
+							
+						// foreach ($messageset as $message) {
+						// 	echo $message ."<br>";
+						// }
+// 						if (!empty($messageset['message'])){
+// 							$msgid = $messageset['id'];
+// 							$_SESSION['msgid'] = $msgid;
+// 							echo "Message ID". " " . $messageset['id']." ".$messageset['first_name']."  ".$messageset['last_name'].
+// 							" ".$messageset['created_at']."<br><b>Post:  </b>".$messageset['message']."<br><br>";
+					
+							
+// 							// commentsdisplay($msgid);
+// } ?>
+				 
+						
+							<!-- <form action='process.php' method='post'>
 							<textarea name='comment'></textarea>
 							<input type='submit' value='Comment'>
 							<input type="hidden" name="message" value="<?=$msgid?>"/>
-							</form>
-<?php
+							</form> -->
+
+							 <?php 
+							// foreach ($comments as $comment) {
+							// $commentid = $comment['comment_message_id'];
+							// if ($commentid == $msgid) {
+							//  $comment['comment']."<br><br>";
 						}
-						commentsdisplay($msgid);
-					}
-				}
-			
+					
 
 			// function displaycomments() {
 			// 	$displaycommentquery = "SELECT users.first_name, users.last_name, comments.comment, comments.created_at
@@ -106,6 +145,7 @@
 		</div>
 		<div id="returnmsg" class="ten column">
 			<?php  if (isset($_SESSION['first_name'])){
+			foreach 
 			displayposts();
 
 		}

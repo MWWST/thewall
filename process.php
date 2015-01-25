@@ -18,6 +18,7 @@ require('new-connection.php');
 	elseif (isset($_POST['msgpost']) && $_POST['msgpost'] == 'newpost'){
 
 		newpost($_POST);
+		
 	}
 
 	elseif (isset($_POST['message']) && $_POST['message'] == $_POST['message']) {
@@ -26,13 +27,17 @@ require('new-connection.php');
 		// var_dump($_POST);
 		// echo "got it";
 		addcomment($_POST);
+		
 	}
 
 	else // malicious navigation to process.php OR someone is trying to log off!
-		echo "nada";
-		var_dump($_POST['message']);
-		// session_destroy();
-		// header('location: index.php');
+		// echo "nada";
+		// displaycomments();
+		// var_dump($_POST['message']);
+		header('location: index.php');
+		session_destroy();
+		(die);
+		
 		// die();
 
 
@@ -116,7 +121,8 @@ require('new-connection.php');
 		$postquery = "INSERT INTO messages (users_id, message, created_at, updated_at)
 		VALUES ('{$_SESSION['user_id']}','{$post['message']}',NOW(),NOW())";
 		run_mysql_query($postquery);
-		displayposts();
+		header('location: wall.php');
+		die();
 
 	}
 
@@ -124,7 +130,7 @@ require('new-connection.php');
 		$displayquery = "SELECT users.first_name, users.last_name, messages.message, messages.created_at
 		FROM users LEFT JOIN messages on users.id = messages.users_id;";
 		$messages = fetch_all($displayquery);
-		var_dump($messages);
+		// var_dump($messages);
 		}
 
 	function addcomment($post){
@@ -132,9 +138,12 @@ require('new-connection.php');
 		VALUES ('{$post['comment']}','{$post['message']}','{$_SESSION['user_id']}',NOW(),NOW())";
 		// var_dump($commentquery);
 		run_mysql_query($commentquery);
-		echo "successfully added to db";
+		// echo "successfully added to db";
+		header('location: wall.php');
+		die();
 	}
 
+	
 
 
 ?>

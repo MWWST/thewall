@@ -17,9 +17,9 @@ function displayposts(){
 ?>
 				<textarea name='comment'></textarea>
 				<input type='submit' value='Comment'>
-				<input type='hidden' name='message' value=<?= $_SESSION['msgid']?>>
+				<input type="hidden" name="message" value="<?=$msgid?>"/>
 				</form>
-				<?php
+				<?php var_dump($msgid);
 
 			}
 		// var_dump($messages);
@@ -47,6 +47,10 @@ else {
 		padding-top: 10px;
 	}
 
+	textarea: {
+		width:950px;
+	}
+
 	#user {
 		text-align: right;
 	}
@@ -56,8 +60,8 @@ else {
 <div id="container" class="container">
 	<div id="header" class="row">
 		<div id="logo" class="one-half column"><h1>The Wall</h1></div>
-		<div id="user"class="one-half column u-pull-right"> <?php if (isset($_SESSION['first_name'])) { echo "Hello"." ". $_SESSION['first_name']." ";
-	 " | My Account | <a href='process.php'>Logout</a>";} ?> </div>
+		<div id="user"class="one-half column u-pull-right"> <?php if (isset($_SESSION['first_name'])) { echo "Hello"." ". $_SESSION['first_name']." " .
+		" My Account | <a href='process.php'>Logout</a>";} ?> </div>
 	</div>
 	<div id="messagescont" class="row">
 		<div id="messages" class="ten column">

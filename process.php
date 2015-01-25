@@ -2,6 +2,7 @@
 session_start();
 // var_dump($_POST);
 require('new-connection.php');
+// var_dump($_POST['$msgid']);
 
 	if (isset($_POST['reg']) && $_POST['reg'] == 'register') 
 		{
@@ -19,9 +20,14 @@ require('new-connection.php');
 		newpost($_POST);
 	}
 
-	else // malicious navigation to process.php OR someone is trying to log off!
+	elseif (isset($_POST['comment']) && $_POST['comment'] == $_SESSION['msgid']) {
+		var_dump($_POST);
+	}
 
-		session_destroy();
+	else // malicious navigation to process.php OR someone is trying to log off!
+		echo "nada";
+		var_dump($_POST);
+		// session_destroy();
 		// header('location: index.php');
 		// die();
 

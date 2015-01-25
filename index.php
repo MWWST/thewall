@@ -26,8 +26,8 @@ session_start();
 	{
 		foreach ($_SESSION['errors'] as $error) 
 		{
-			echo "<p class='error'>{$error}</p>";
-			// var_dump($_SESSION);
+			// echo "<p class='error'>{$error}</p>";
+			var_dump($_SESSION);
 		}
 		unset($_SESSION['errors']);
 	}

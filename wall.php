@@ -1,24 +1,35 @@
 <?php
 session_start();
 require('new-connection.php');
+if (isset($_SESSION['first_name'])){
 function displayposts(){
 		$displayquery = "SELECT messages.id,users.first_name, users.last_name, messages.message, messages.created_at
 		FROM users LEFT JOIN messages on users.id = messages.users_id;";
 		$messages = fetch_all($displayquery);
 		foreach ($messages as $id =>$messageset) {
 			// foreach ($messageset as $message) {
-				$msgid = $messageset['id'];
-				echo $messageset['id'],$messageset['first_name']." ".$messageset['last_name']." ".$messageset['created_at']."<br>".$messageset['message']."<br>".
-				"<form action='process.php' method='post'>
+			?>	<form action='process.php' method='post'>
+			<?php $msgid = $messageset['id'];
+				$_SESSION['msgid'] = $msgid;
+				// var_dump($_SESSION['msgid']);
+				echo $messageset['id'],$messageset['first_name']." ".$messageset['last_name'].
+				" ".$messageset['created_at']."<br>".$messageset['message']."<br>";
+?>
 				<textarea name='comment'></textarea>
 				<input type='submit' value='Comment'>
-				<input type='hidden' name='comment' value ='$msgid'>
-				</form>";
+				<input type='hidden' name='message' value=<?= $_SESSION['msgid']?>>
+				</form>
+				<?php
 
 			}
 		// var_dump($messages);
-		var_dump($messageset);
+		// var_dump($messageset);
 		}
+	}
+
+else {
+	echo "not logged in";
+}
 
 	
 ?>
@@ -45,8 +56,8 @@ function displayposts(){
 <div id="container" class="container">
 	<div id="header" class="row">
 		<div id="logo" class="one-half column"><h1>The Wall</h1></div>
-		<div id="user"class="one-half column u-pull-right"> <?="Hello"." ". $_SESSION['first_name']." ";
-	echo " | My Account | <a href='process.php'>Logout</a>";?></div>
+		<div id="user"class="one-half column u-pull-right"> <?php if (isset($_SESSION['first_name'])) { echo "Hello"." ". $_SESSION['first_name']." ";
+	 " | My Account | <a href='process.php'>Logout</a>";} ?> </div>
 	</div>
 	<div id="messagescont" class="row">
 		<div id="messages" class="ten column">
@@ -60,8 +71,8 @@ function displayposts(){
 		</form>
 		</div>
 		<div id="returnmsg">
-			<?php 
-			displayposts();
+			<?php  if (isset($_SESSION['first_name'])){
+			displayposts();}
 			?>
 		</div>
 	</div>

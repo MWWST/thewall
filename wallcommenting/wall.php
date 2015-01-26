@@ -20,7 +20,7 @@
 				}
 			function displayposts(){
 					$displayquery = "SELECT messages.id as message_id,messages.users_id as user_message_id, users.first_name, users.last_name, messages.id, messages.message, 
-					date_format(messages.created_at,'%a %b %e %Y %r') as formatted_msg_date
+					date_format(messages.created_at,'%a %b %e %Y %r') as formatted_msg_date, messages.created_at,NOW(),TIMEDIFF(NOW(),messages.created_at)/60 as timedifference
 					FROM users 
 					LEFT JOIN messages on users.id = messages.users_id
 					ORDER BY messages.created_at DESC;";
@@ -40,10 +40,10 @@
 							$msgid = $messageset['id'];
 							$msgdelid = $messageset['id'];
 							$_SESSION['msgid'] = $msgid;
-							echo "<b>". $messageset['first_name']." ".$messageset['last_name']." </b> ".$messageset['id']." ". "On ".$messageset['formatted_msg_date']." <br> ".$messageset['message']."  ";
+							echo "<b>".$messageset['first_name']." ".$messageset['last_name']." </b> ".$messageset['id']." ". "On ".$messageset['formatted_msg_date']." <br> ".$messageset['message']."  ";
 							
 							// var_dump($_SESSION);							
-							if ($_SESSION['user_id'] == $messageset['user_message_id']) {
+							if ($_SESSION['user_id'] == $messageset['user_message_id'] && $messageset['timedifference'] < 1) {
 								?> <form action='process.php' method='post'>
 							<input type='submit' value='Delete'>
 							<input type="hidden" name="delete" value="<?=$msgdelid?>"/>

@@ -31,7 +31,8 @@ require('new-connection.php');
 	}
 
 	elseif (isset($_POST['delete']) && $_POST['delete'] == $_POST['delete']) {
-
+		deletemessage($_POST);
+		echo "successfully deleted";
 		var_dump($_POST);
 		
 	}
@@ -149,6 +150,19 @@ require('new-connection.php');
 		header('location: wall.php');
 		die();
 	}
+
+	function deletemessage($post) {
+		$commentdeletequery = "DELETE FROM comments WHERE comments.messages_id = {$post['delete']} ;";
+		run_mysql_query($commentdeletequery);
+		// var_dump($commentdeletequery);
+		$postdeletequery = "DELETE FROM messages WHERE id = {$post['delete']} ;";
+		// echo "success";
+		run_mysql_query($postdeletequery);
+		header('location: wall.php');
+		die();
+	}
+
+	
 
 	
 

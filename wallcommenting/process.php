@@ -50,6 +50,7 @@ require('new-connection.php');
 }
 
 	function register_user($post){
+
 	
 	$_SESSION['errors'] = array(); 	//define session errors array
 
@@ -84,8 +85,13 @@ require('new-connection.php');
 
 		else {
 
+			$escaped_first_name = escape_this_string($post['first_name']);
+			$escaped_last_name = escape_this_string($post['last_name']);
+			$escaped_password = escape_this_string($post['password']);
+			$escaped_email = escape_this_string($post['email']);
+
 			$query = "INSERT INTO users (first_name, last_name, password, email, created_at, updated_at)
-			VALUES ('{$post['first_name']}','{$post['last_name']}','{$post['password']}','{$post['email']}',
+			VALUES ('{$escaped_first_name}','{$escaped_last_name}','{$escaped_password}','{$escaped_email}',
 				NOW(),NOW())";
 
 			// var_dump($query);	
@@ -102,8 +108,11 @@ require('new-connection.php');
 
 	function login($post) {
 
-		$query = "SELECT * FROM users WHERE users.password ='{$post['password']}' 
-			 AND users.email ='{$post['email']}'";
+		$escaped_email = escape_this_string($post['email']);
+		$escaped_password =escape_this_string($post['password']);
+
+		$query = "SELECT * FROM users WHERE users.password ='{$escaped_password}' 
+			 AND users.email ='{$escaped_email}'";
 
 	 	$user = fetch_all($query);
 
@@ -126,8 +135,13 @@ require('new-connection.php');
 
 	function newpost($post) {
 
+		$escape_session_id = escape_this_string($_SESSION['user_id']);
+		$escape_message = escape_this_string($post['message']);
+		// $escape_message= ($post['message']);
+
 		$postquery = "INSERT INTO messages (users_id, message, created_at, updated_at)
-		VALUES ('{$_SESSION['user_id']}','{$post['message']}',NOW(),NOW())";
+		VALUES ('{$escape_session_id}','{$escape_message}',NOW(),NOW());";
+		// var_dump($postquery);
 		run_mysql_query($postquery);
 		header('location: wall.php');
 		die();
@@ -142,8 +156,13 @@ require('new-connection.php');
 		}
 
 	function addcomment($post){
+		
+		$escaped_comment = $post['comment'];
+		$escaped_message = $post['message'];
+		$escape_session_id = escape_this_string($_SESSION['user_id']);
+
 		$commentquery = "INSERT INTO comments (comment, messages_id, users_id, created_at,updated_at)
-		VALUES ('{$post['comment']}','{$post['message']}','{$_SESSION['user_id']}',NOW(),NOW())";
+		VALUES ('{$escaped_comment}','{$escaped_message}','{$escape_session_id}',NOW(),NOW())";
 		// var_dump($commentquery);
 		run_mysql_query($commentquery);
 		// echo "successfully added to db";

@@ -27,11 +27,18 @@ require('new-connection.php');
 		// var_dump($_POST);
 		// echo "got it";
 		addcomment($_POST);
+
+	}
+
+	elseif (isset($_POST['delete']) && $_POST['delete'] == $_POST['delete']) {
+
+		var_dump($_POST);
 		
 	}
 
-	else // malicious navigation to process.php OR someone is trying to log off!
-		// echo "nada";
+	else {// malicious navigation to process.php OR someone is trying to log off!
+		// echo "comment_delte not working";
+		// var_dump($_POST);
 		// displaycomments();
 		// var_dump($_POST['message']);
 		header('location: index.php');
@@ -39,7 +46,7 @@ require('new-connection.php');
 		(die);
 		
 		// die();
-
+}
 
 	function register_user($post){
 	

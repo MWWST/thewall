@@ -28,6 +28,9 @@
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+p.error{
+  color: red;
+}
 .container {
   position: relative;
   width: 100%;
